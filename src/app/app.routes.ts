@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { AccountTransactions } from './account-transactions/account-transactions';
+import { Home } from '../components/account-card/home/home';
+import { AccountTransactions } from '../components/account-card/account-transactions/account-transactions';
 
 export const routes: Routes = [
   {

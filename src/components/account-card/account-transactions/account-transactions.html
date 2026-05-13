@@ -8,9 +8,19 @@
   </div>
 
   <div *ngIf="account.transactions?.length; else emptyState" class="transactions-panel">
-    <ul class="transaction-list">
+    <div class="search-section">
+      <input
+        id="transaction-search"
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Enter transaction ID..."
+        class="search-input"
+      />
+    </div>
+
+    <ul *ngIf="filteredTransactions.length; else noResults" class="transaction-list">
       <li
-        *ngFor="let transaction of account.transactions; trackBy: trackByTransactionId"
+        *ngFor="let transaction of filteredTransactions; trackBy: trackByTransactionId"
         class="transaction-item"
       >
         <span class="transaction-date">{{ transaction.created_at | date: 'shortDate' }}</span>
@@ -24,6 +34,13 @@
         </strong>
       </li>
     </ul>
+
+    <ng-template #noResults>
+      <div class="no-results">
+        <p>No transactions found with ID "{{ searchTerm }}".</p>
+        <button type="button" (click)="searchTerm = ''" class="clear-search">Clear search</button>
+      </div>
+    </ng-template>
   </div>
 </section>
 

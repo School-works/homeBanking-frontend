@@ -1,4 +1,4 @@
-import { Account } from '../../models/account';
+import { Account } from '../../../models/account';
 
 export const accounts: Account[] = [
   {
@@ -30,14 +30,14 @@ export const accounts: Account[] = [
     created_at: new Date('2025-02-14'),
     transactions: [
       {
-        id: 3,
+        id: 1,
         account_id: 2,
         amount: -75.99,
         description: 'Online shopping',
         created_at: new Date('2025-02-20'),
       },
       {
-        id: 4,
+        id: 2,
         account_id: 2,
         amount: 540,
         description: 'Freelance payment',
@@ -52,14 +52,14 @@ export const accounts: Account[] = [
     created_at: new Date('2023-11-30'),
     transactions: [
       {
-        id: 5,
+        id: 1,
         account_id: 3,
         amount: -15.5,
         description: 'Coffee shop',
         created_at: new Date('2023-12-02'),
       },
       {
-        id: 6,
+        id: 2,
         account_id: 3,
         amount: 300,
         description: null,

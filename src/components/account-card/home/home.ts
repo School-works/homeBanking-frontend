@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { accounts } from '../data/accounts';
-import { AccountCard } from '../../components/account-card/account-card';
+import { AccountCard } from '../account-card';
 
 @Component({
   standalone: true,

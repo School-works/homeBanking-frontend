@@ -1,15 +1,16 @@
 <article class="account-card">
+  <a
+    class="manage-button top-button"
+    [routerLink]="['/accounts', account.id, 'transactions']"
+  >
+    View transactions
+  </a>
+
   <div class="card-header">
     <div>
       <h3>{{ account.owner_name }}</h3>
       <p><strong>Account ID</strong>: {{ account.id }}</p>
     </div>
-    <a
-      class="manage-button"
-      [routerLink]="['/accounts', account.id, 'transactions']"
-    >
-      Manage account
-    </a>
   </div>
 
   <p><strong>Currency</strong>: {{ account.currency }}</p>
