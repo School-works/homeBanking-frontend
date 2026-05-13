@@ -1,0 +1,11 @@
+<section class="home-page">
+  <div class="hero">
+  </div>
+
+  <div class="accounts-grid">
+    <app-account-card
+      *ngFor="let account of accounts"
+      [account]="account"
+    ></app-account-card>
+  </div>
+</section>
