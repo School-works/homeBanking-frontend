@@ -1,0 +1,42 @@
+<section class="transactions-page" *ngIf="account; else notFound">
+  <div class="page-header">
+    <div>
+      <h2>Transactions of {{ account.owner_name }}</h2>
+      <p class="subtitle">Account ID {{ account.id }} • {{ account.currency }}</p>
+    </div>
+    <a routerLink="/" class="back-link">Back to accounts</a>
+  </div>
+
+  <div *ngIf="account.transactions?.length; else emptyState" class="transactions-panel">
+    <ul class="transaction-list">
+      <li
+        *ngFor="let transaction of account.transactions; trackBy: trackByTransactionId"
+        class="transaction-item"
+      >
+        <span class="transaction-date">{{ transaction.created_at | date: 'shortDate' }}</span>
+        <span class="transaction-description">{{ transaction.description || 'No description' }}</span>
+        <strong
+          class="transaction-amount"
+          [class.deposit]="transaction.amount >= 0"
+          [class.withdrawal]="transaction.amount < 0"
+        >
+          {{ transaction.amount | currency: account.currency:'symbol' }}
+        </strong>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<ng-template #emptyState>
+  <div class="empty-state">
+    <p>No transactions are available for this account yet.</p>
+  </div>
+</ng-template>
+
+<ng-template #notFound>
+  <section class="not-found">
+    <h2>Account not found</h2>
+    <p>Verify the link and try again.</p>
+    <a routerLink="/" class="back-link">Back to accounts</a>
+  </section>
+</ng-template>

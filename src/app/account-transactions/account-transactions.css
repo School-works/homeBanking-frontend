@@ -1,0 +1,86 @@
+.transactions-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-header h2 {
+  margin: 0;
+}
+
+.subtitle {
+  color: #5c6778;
+  margin: 0.4rem 0 0;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.95rem;
+  background: #f2f6ff;
+  color: #0b61ff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.transactions-panel {
+  background: #ffffff;
+  border: 1px solid #e7edf4;
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 1rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid #f0f4f8;
+  align-items: center;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-date,
+.transaction-description {
+  color: #344054;
+}
+
+.transaction-amount {
+  font-weight: 700;
+}
+
+.transaction-amount.deposit {
+  color: #15803d;
+}
+
+.transaction-amount.withdrawal {
+  color: #b91c1c;
+}
+
+.empty-state,
+.not-found {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  text-align: center;
+}

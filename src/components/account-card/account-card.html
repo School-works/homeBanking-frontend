@@ -1,6 +1,17 @@
 <article class="account-card">
-  <h3>{{ account.owner_name }}</h3>
-  <p><strong>Account ID</strong>: {{ account.id }}</p>
+  <div class="card-header">
+    <div>
+      <h3>{{ account.owner_name }}</h3>
+      <p><strong>Account ID</strong>: {{ account.id }}</p>
+    </div>
+    <a
+      class="manage-button"
+      [routerLink]="['/accounts', account.id, 'transactions']"
+    >
+      Manage account
+    </a>
+  </div>
+
   <p><strong>Currency</strong>: {{ account.currency }}</p>
   <p><strong>Opened</strong>: {{ account.created_at | date:'longDate' }}</p>
 </article>
