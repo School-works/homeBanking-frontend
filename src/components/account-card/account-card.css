@@ -80,6 +80,11 @@
   color: #c92a2a;
 }
 
+.converted-balance {
+  margin-top: 0.75rem;
+  color: #0b61ff;
+}
+
 .empty-state {
   color: #6b7280;
   margin: 0.5rem 0 0;

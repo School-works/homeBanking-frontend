@@ -13,6 +13,20 @@
     </div>
   </div>
 
+  <p><strong>Balance</strong>: {{ balance | number:'1.2-2' }} {{ account.currency }}</p>
+  <button
+    *ngIf="canConvert"
+    class="manage-button convert-button"
+    type="button"
+    (click)="convertBalance()"
+    [disabled]="isConverting()"
+  >
+    {{ isConverting() ? 'Converting...' : 'Convert to USD' }}
+  </button>
+  <p *ngIf="convertedBalance()" class="converted-balance">
+    {{ convertedBalance() }}
+  </p>
+
   <p><strong>Currency</strong>: {{ account.currency }}</p>
   <p><strong>Opened</strong>: {{ account.created_at | date:'longDate' }}</p>
 </article>
