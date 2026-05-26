@@ -1,0 +1,26 @@
+<div class="operation-page">
+  <div class="op-header">
+    <a [routerLink]="['/']" class="back-link">← Torna ai conti</a>
+    <h2>➕ Registra deposito</h2>
+    <p class="op-subtitle" *ngIf="account">{{ account.owner_name }} — ID {{ account.id }}</p>
+  </div>
+
+  <div class="op-form">
+    <p *ngIf="error" class="form-error">{{ error }}</p>
+    <p *ngIf="success" class="form-success">{{ success }}</p>
+
+    <label>
+      Importo ({{ account?.currency }})
+      <input type="number" min="0.01" step="0.01" [(ngModel)]="amount" placeholder="0.00" />
+    </label>
+
+    <label>
+      Descrizione
+      <input type="text" [(ngModel)]="description" placeholder="es. Stipendio, Rimborso…" />
+    </label>
+
+    <button class="submit-btn deposit-btn" type="button" (click)="submit()" [disabled]="submitting">
+      {{ submitting ? 'Salvataggio…' : 'Conferma deposito' }}
+    </button>
+  </div>
+</div>

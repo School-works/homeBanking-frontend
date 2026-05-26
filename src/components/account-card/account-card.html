@@ -1,51 +1,47 @@
 <article class="account-card">
-  <a
-    class="manage-button top-button"
-    [routerLink]="['/accounts', account.id, 'transactions']"
-  >
-    View transactions
-  </a>
 
+  <!-- Intestazione conto -->
   <div class="card-header">
     <div>
       <h3>{{ account.owner_name }}</h3>
-      <p><strong>Account ID</strong>: {{ account.id }}</p>
+      <p class="card-meta"><strong>ID</strong>: {{ account.id }} &nbsp;|&nbsp; <strong>Valuta</strong>: {{ account.currency }}</p>
+      <p class="card-meta"><strong>Aperto il</strong>: {{ account.created_at | date:'longDate' }}</p>
+      <p class="card-balance">{{ balance | number:'1.2-2' }} {{ account.currency }}</p>
     </div>
   </div>
 
-  <p><strong>Balance</strong>: {{ balance | number:'1.2-2' }} {{ account.currency }}</p>
-  
-  <div class="conversion-buttons">
-    <button
-      *ngIf="canConvert"
-      class="manage-button convert-button"
-      type="button"
-      (click)="showUSD() ? resetUSD() : convertToUSD()"
-      [disabled]="isConvertingUSD()"
-    >
-      {{ isConvertingUSD() ? 'Converting...' : (showUSD() ? '✓ USD' : 'Convert to USD') }}
+  <!-- Menu a tendina operazioni -->
+  <div class="dropdown" [class.open]="menuOpen">
+    <button class="dropdown-toggle" type="button" (click)="menuOpen = !menuOpen">
+      Operazioni ▾
     </button>
-
-    <button
-      *ngIf="canConvert"
-      class="manage-button convert-button bitcoin-button"
-      type="button"
-      (click)="showBTC() ? resetBTC() : convertToBTC()"
-      [disabled]="isConvertingBTC()"
-    >
-      {{ isConvertingBTC() ? 'Converting...' : (showBTC() ? '✓ BTC' : 'Convert to Bitcoin') }}
-    </button>
+    <ul class="dropdown-menu" (click)="menuOpen = false">
+      <li>
+        <a [routerLink]="['/accounts', account.id, 'balance']">
+          💰 Visualizza saldo
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accounts', account.id, 'transactions']">
+          📋 Lista transazioni
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accounts', account.id, 'deposit']">
+          ➕ Registra deposito
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accounts', account.id, 'withdrawal']">
+          ➖ Registra prelievo
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accounts', account.id, 'convert']">
+          🔄 Converti valuta
+        </a>
+      </li>
+    </ul>
   </div>
 
-  <div *ngIf="showUSD() || showBTC()" class="conversions">
-    <p *ngIf="showUSD()" class="conversion-item usd-conversion">
-      {{ balance | number:'1.2-2' }} {{ account.currency }} = {{ usdBalance() | number:'1.2-2' }} USD
-    </p>
-    <p *ngIf="showBTC()" class="conversion-item btc-conversion">
-      {{ balance | number:'1.2-2' }} {{ account.currency }} = {{ btcBalance() | number:'1.2-8' }} BTC
-    </p>
-  </div>
-
-  <p><strong>Currency</strong>: {{ account.currency }}</p>
-  <p><strong>Opened</strong>: {{ account.created_at | date:'longDate' }}</p>
 </article>

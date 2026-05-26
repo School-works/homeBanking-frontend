@@ -1,0 +1,41 @@
+<div class="operation-page">
+  <div class="op-header">
+    <a [routerLink]="['/']" class="back-link">← Torna ai conti</a>
+    <h2>🔄 Converti valuta</h2>
+    <p class="op-subtitle" *ngIf="account">{{ account.owner_name }} — ID {{ account.id }}</p>
+  </div>
+
+  <div class="convert-form">
+
+    <!-- Selezione modalità: fiat o crypto -->
+    <div class="convert-tabs">
+      <button class="tab-btn" [class.active]="mode === 'fiat'" type="button" (click)="setMode('fiat')">
+        💵 Valuta fiat
+      </button>
+      <button class="tab-btn" [class.active]="mode === 'crypto'" type="button" (click)="setMode('crypto')">
+        🪙 Criptovaluta
+      </button>
+    </div>
+
+    <!-- Selezione valuta di destinazione -->
+    <label style="display:flex; flex-direction:column; gap:0.35rem; font-weight:600; font-size:0.9rem; color:#374151;">
+      Converti in
+      <select [(ngModel)]="targetCurrency" style="padding:0.7rem 0.9rem; border:1px solid #d1d5db; border-radius:10px; font-size:1rem;">
+        <option *ngFor="let c of currencyOptions" [value]="c">{{ c }}</option>
+      </select>
+    </label>
+
+    <p *ngIf="error" class="form-error">{{ error }}</p>
+
+    <button class="submit-btn convert-btn" type="button" (click)="convert()" [disabled]="converting">
+      {{ converting ? 'Conversione in corso…' : 'Converti' }}
+    </button>
+
+    <!-- Risultato conversione -->
+    <div *ngIf="result" class="conversion-result">
+      <p>Saldo originale: <strong>{{ result.original_balance | number:'1.2-2' }} {{ account?.currency }}</strong></p>
+      <p class="converted">{{ result.converted_balance | number:'1.2-8' }} {{ result.currency }}</p>
+    </div>
+
+  </div>
+</div>

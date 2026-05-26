@@ -1,0 +1,15 @@
+<div class="operation-page">
+  <div class="op-header">
+    <a routerLink="/" class="back-link">← Torna ai conti</a>
+    <h2>💰 Saldo del conto</h2>
+    <p class="op-subtitle" *ngIf="account">{{ account.owner_name }} — ID {{ account.id }}</p>
+  </div>
+
+  <div *ngIf="loading" class="state-message">Calcolo saldo in corso…</div>
+  <div *ngIf="error" class="state-message error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && balanceData" class="result-card">
+    <p class="result-label">Saldo attuale</p>
+    <p class="result-amount">{{ balanceData.balance | number:'1.2-2' }} {{ account?.currency }}</p>
+  </div>
+</div>
