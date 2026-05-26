@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Account } from '../../models/account';
 import { FrankFurterApiService } from '../../app/services/frankfurter-api.service';
+import { BinanceApiService } from '../../app/services/binance-api';
 
 @Component({
   standalone: true,
@@ -14,10 +15,14 @@ import { FrankFurterApiService } from '../../app/services/frankfurter-api.servic
 export class AccountCard {
   @Input() account!: Account;
 
-  protected convertedBalance = signal<string | null>(null);
-  protected isConverting = signal(false);
+  protected usdBalance = signal<number | null>(null);
+  protected btcBalance = signal<number | null>(null);
+  protected isConvertingUSD = signal(false);
+  protected isConvertingBTC = signal(false);
+  protected showUSD = signal(false);
+  protected showBTC = signal(false);
 
-  constructor(private frankFurterApi: FrankFurterApiService) {}
+  constructor(private frankFurterApi: FrankFurterApiService, private binanceApi: BinanceApiService) {}
 
   protected get balance(): number {
     return this.account?.transactions?.reduce((sum, transaction) => sum + transaction.amount, 0) ?? 0;
@@ -27,24 +32,55 @@ export class AccountCard {
     return this.account?.currency !== 'USD';
   }
 
-  protected convertBalance(): void {
-    if (!this.account) {
-      return;
-    }
+  protected convertToUSD(): void {
+    if (!this.account) return;
 
-    this.isConverting.set(true);
-    this.convertedBalance.set(null);
+    this.isConvertingUSD.set(true);
+    this.usdBalance.set(null);
+    this.showUSD.set(false);
 
     this.frankFurterApi
       .convert(this.account.currency, 'USD', this.balance)
       .then((result) => {
-        this.convertedBalance.set(`${this.balance.toFixed(2)} ${this.account.currency} = ${result} USD`);
+        this.usdBalance.set(parseFloat(result));
+        this.showUSD.set(true);
       })
       .catch(() => {
-        this.convertedBalance.set('Conversion failed. Please try again.');
+        this.usdBalance.set(null);
       })
       .finally(() => {
-        this.isConverting.set(false);
+        this.isConvertingUSD.set(false);
       });
+  }
+
+  protected convertToBTC(): void {
+    if (!this.account) return;
+
+    this.isConvertingBTC.set(true);
+    this.btcBalance.set(null);
+    this.showBTC.set(false);
+
+    this.binanceApi
+      .convert(this.account.currency, 'BTC', this.balance)
+      .then((result) => {
+        this.btcBalance.set(parseFloat(result));
+        this.showBTC.set(true);
+      })
+      .catch(() => {
+        this.btcBalance.set(null);
+      })
+      .finally(() => {
+        this.isConvertingBTC.set(false);
+      });
+  }
+
+  protected resetUSD(): void {
+    this.showUSD.set(false);
+    this.usdBalance.set(null);
+  }
+
+  protected resetBTC(): void {
+    this.showBTC.set(false);
+    this.btcBalance.set(null);
   }
 }

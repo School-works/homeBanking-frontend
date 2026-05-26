@@ -14,18 +14,37 @@
   </div>
 
   <p><strong>Balance</strong>: {{ balance | number:'1.2-2' }} {{ account.currency }}</p>
-  <button
-    *ngIf="canConvert"
-    class="manage-button convert-button"
-    type="button"
-    (click)="convertBalance()"
-    [disabled]="isConverting()"
-  >
-    {{ isConverting() ? 'Converting...' : 'Convert to USD' }}
-  </button>
-  <p *ngIf="convertedBalance()" class="converted-balance">
-    {{ convertedBalance() }}
-  </p>
+  
+  <div class="conversion-buttons">
+    <button
+      *ngIf="canConvert"
+      class="manage-button convert-button"
+      type="button"
+      (click)="showUSD() ? resetUSD() : convertToUSD()"
+      [disabled]="isConvertingUSD()"
+    >
+      {{ isConvertingUSD() ? 'Converting...' : (showUSD() ? '✓ USD' : 'Convert to USD') }}
+    </button>
+
+    <button
+      *ngIf="canConvert"
+      class="manage-button convert-button bitcoin-button"
+      type="button"
+      (click)="showBTC() ? resetBTC() : convertToBTC()"
+      [disabled]="isConvertingBTC()"
+    >
+      {{ isConvertingBTC() ? 'Converting...' : (showBTC() ? '✓ BTC' : 'Convert to Bitcoin') }}
+    </button>
+  </div>
+
+  <div *ngIf="showUSD() || showBTC()" class="conversions">
+    <p *ngIf="showUSD()" class="conversion-item usd-conversion">
+      {{ balance | number:'1.2-2' }} {{ account.currency }} = {{ usdBalance() | number:'1.2-2' }} USD
+    </p>
+    <p *ngIf="showBTC()" class="conversion-item btc-conversion">
+      {{ balance | number:'1.2-2' }} {{ account.currency }} = {{ btcBalance() | number:'1.2-8' }} BTC
+    </p>
+  </div>
 
   <p><strong>Currency</strong>: {{ account.currency }}</p>
   <p><strong>Opened</strong>: {{ account.created_at | date:'longDate' }}</p>
