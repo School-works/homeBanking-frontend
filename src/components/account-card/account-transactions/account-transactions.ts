@@ -15,7 +15,7 @@ import { BankingService, Account, Transaction } from '../../../app/services/bank
 export class AccountTransactions implements OnInit, OnDestroy {
   protected account?: Account;
   protected transactions: Transaction[] = [];
-  protected balance: number = 0;
+  protected balance = 0;
   protected searchTerm = '';
   protected loading = true;
   protected error: string | null = null;
@@ -28,6 +28,7 @@ export class AccountTransactions implements OnInit, OnDestroy {
     private banking: BankingService,
     private cdr: ChangeDetectorRef,
   ) {
+    // Legge l'ID del conto dall'URL (es. /accounts/3/transactions)
     this.accountId = Number(this.route.snapshot.paramMap.get('id'));
   }
 
@@ -35,6 +36,7 @@ export class AccountTransactions implements OnInit, OnDestroy {
     this.load();
   }
 
+  // Carica conto, transazioni e saldo in parallelo
   protected load(): void {
     this.loading = true;
     this.error = null;
@@ -54,8 +56,8 @@ export class AccountTransactions implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('forkJoin error:', err);
-        this.error = 'Failed to load account data.';
+        console.error('Errore nel caricamento delle transazioni:', err);
+        this.error = 'Impossibile caricare i dati del conto.';
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -67,6 +69,7 @@ export class AccountTransactions implements OnInit, OnDestroy {
     this.subs.forEach((s) => s.unsubscribe());
   }
 
+  // Filtra le transazioni per ID (campo di ricerca)
   protected get filteredTransactions(): Transaction[] {
     if (!this.searchTerm.trim()) return this.transactions;
     const searchId = parseInt(this.searchTerm.trim());
@@ -74,6 +77,7 @@ export class AccountTransactions implements OnInit, OnDestroy {
     return this.transactions.filter((t) => t.id === searchId);
   }
 
+  // Il DB salva l'importo sempre positivo; il tipo determina il segno
   protected signedAmount(t: Transaction): number {
     return t.type === 'withdrawal' ? -Math.abs(t.amount) : Math.abs(t.amount);
   }

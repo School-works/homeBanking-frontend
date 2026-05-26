@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { AccountCard } from '../account-card';
 import { BankingService, Account } from '../../../app/services/banking.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -27,10 +27,12 @@ export class Home implements OnInit, OnDestroy {
     this.load();
   }
 
+  // Carica i conti dall'API e aggiorna la vista
   protected load(): void {
     this.loading = true;
     this.error = null;
     this.sub?.unsubscribe();
+
     this.sub = this.banking.getAccounts().subscribe({
       next: (accounts) => {
         this.accounts = accounts;
@@ -38,8 +40,8 @@ export class Home implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error loading accounts:', err);
-        this.error = 'Failed to load accounts.';
+        console.error('Errore nel caricamento dei conti:', err);
+        this.error = 'Impossibile caricare i conti. Il server è in esecuzione?';
         this.loading = false;
         this.cdr.detectChanges();
       },

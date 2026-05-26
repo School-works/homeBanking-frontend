@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BankingService, Account } from '../../app/services/banking.service';
 
-
 @Component({
   standalone: true,
   selector: 'app-account-card',
@@ -16,6 +15,7 @@ import { BankingService, Account } from '../../app/services/banking.service';
 export class AccountCard implements OnInit, OnDestroy {
   @Input() account!: Account;
 
+  // Saldo e conversioni
   protected apiBalance = signal<number | null>(null);
   protected usdBalance = signal<number | null>(null);
   protected btcBalance = signal<number | null>(null);
@@ -24,6 +24,7 @@ export class AccountCard implements OnInit, OnDestroy {
   protected showUSD = signal(false);
   protected showBTC = signal(false);
 
+  // Stato del form deposito/prelievo
   protected showForm = signal(false);
   protected formType: 'deposit' | 'withdrawal' = 'deposit';
   protected formAmount: number | null = null;
@@ -32,9 +33,8 @@ export class AccountCard implements OnInit, OnDestroy {
   protected formSubmitting = signal(false);
 
   private subs: Subscription[] = [];
-constructor(private banking: BankingService) {
-  console.log('AccountCard constructed for', this.account);
-}
+
+  constructor(private banking: BankingService) {}
 
   ngOnInit(): void {
     this.refreshBalance();
@@ -44,6 +44,7 @@ constructor(private banking: BankingService) {
     this.subs.forEach((s) => s.unsubscribe());
   }
 
+  // Recupera il saldo aggiornato dal server
   protected refreshBalance(): void {
     const sub = this.banking.getBalance(this.account.id).subscribe({
       next: (data) => this.apiBalance.set(data.balance),
@@ -56,10 +57,12 @@ constructor(private banking: BankingService) {
     return this.apiBalance() ?? 0;
   }
 
+  // Mostra i pulsanti di conversione solo se la valuta non è già USD
   protected get canConvert(): boolean {
     return this.account?.currency !== 'USD';
   }
 
+  // Apre il form per deposito o prelievo
   protected openForm(type: 'deposit' | 'withdrawal'): void {
     this.formType = type;
     this.formAmount = null;
@@ -72,23 +75,23 @@ constructor(private banking: BankingService) {
     this.showForm.set(false);
   }
 
+  // Invia il form al server
   protected submitForm(): void {
     if (!this.formAmount || this.formAmount <= 0) {
-      this.formError = 'Amount must be a positive number.';
+      this.formError = "L'importo deve essere un numero positivo.";
       return;
     }
     if (!this.formDescription.trim()) {
-      this.formError = 'Description is required.';
+      this.formError = 'La descrizione è obbligatoria.';
       return;
     }
 
     this.formError = null;
     this.formSubmitting.set(true);
 
-    const action$ =
-      this.formType === 'deposit'
-        ? this.banking.deposit(this.account.id, this.formAmount, this.formDescription)
-        : this.banking.withdraw(this.account.id, this.formAmount, this.formDescription);
+    const action$ = this.formType === 'deposit'
+      ? this.banking.deposit(this.account.id, this.formAmount, this.formDescription)
+      : this.banking.withdraw(this.account.id, this.formAmount, this.formDescription);
 
     const sub = action$.subscribe({
       next: () => {
@@ -99,17 +102,16 @@ constructor(private banking: BankingService) {
         this.formSubmitting.set(false);
       },
       error: (err) => {
-        this.formError = err?.error?.error ?? err?.message ?? 'Operation failed.';
+        this.formError = err?.error?.error ?? err?.message ?? 'Operazione fallita.';
         this.formSubmitting.set(false);
       },
     });
     this.subs.push(sub);
   }
 
+  // Converte il saldo in USD tramite API PHP → Frankfurter
   protected convertToUSD(): void {
     this.isConvertingUSD.set(true);
-    this.usdBalance.set(null);
-    this.showUSD.set(false);
     const sub = this.banking.convertFiat(this.account.id, 'USD').subscribe({
       next: (data) => {
         this.usdBalance.set(data.converted_balance);
@@ -121,10 +123,9 @@ constructor(private banking: BankingService) {
     this.subs.push(sub);
   }
 
+  // Converte il saldo in BTC tramite API PHP → Binance
   protected convertToBTC(): void {
     this.isConvertingBTC.set(true);
-    this.btcBalance.set(null);
-    this.showBTC.set(false);
     const sub = this.banking.convertCrypto(this.account.id, 'BTC').subscribe({
       next: (data) => {
         this.btcBalance.set(data.converted_balance);

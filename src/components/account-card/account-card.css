@@ -11,8 +11,6 @@
   width: 100%;
   text-align: center;
   margin-bottom: 1rem;
-  margin-left: 0;
-  margin-right: 0;
   text-decoration: none;
   box-sizing: border-box;
 }
@@ -25,6 +23,7 @@
   margin-bottom: 0.75rem;
 }
 
+/* Pulsante generico */
 .manage-button {
   border: none;
   background: #0b61ff;
@@ -38,10 +37,16 @@
   box-sizing: border-box;
 }
 
-.manage-button:hover {
+.manage-button:hover:not(:disabled) {
   background: #084ec7;
 }
 
+.manage-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Pulsanti conversione */
 .conversion-buttons {
   display: flex;
   gap: 0.5rem;
@@ -52,54 +57,94 @@
   background: #f7931a;
 }
 
-.bitcoin-button:hover {
+.bitcoin-button:hover:not(:disabled) {
   background: #e68b0f;
 }
 
-.transactions-panel {
+/* Risultati conversione */
+.conversions {
+  margin-bottom: 0.5rem;
+}
+
+/* Pulsanti deposito e prelievo */
+.transaction-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.deposit-btn { background: #137333; }
+.deposit-btn:hover { background: #0d5228; }
+
+.withdrawal-btn { background: #b91c1c; }
+.withdrawal-btn:hover { background: #991818; }
+
+/* Form deposito/prelievo */
+.transaction-form {
   margin-top: 1rem;
   border-top: 1px solid #e7edf4;
   padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.transaction-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
+.transaction-form h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
 }
 
-.transaction-item {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.75rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid #f0f4f8;
-  align-items: center;
+.transaction-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
 }
 
-.transaction-date,
-.transaction-description {
-  color: #3b485e;
+.transaction-form input {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
 }
 
-.transaction-amount {
-  font-weight: 700;
+.transaction-form input:focus {
+  outline: none;
+  border-color: #0b61ff;
+  box-shadow: 0 0 0 3px rgba(11, 97, 255, 0.1);
 }
 
-.transaction-amount.deposit {
-  color: #137333;
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
-.transaction-amount.withdrawal {
-  color: #c92a2a;
+.cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-.converted-balance {
-  margin-top: 0.75rem;
-  color: #0b61ff;
+.cancel-btn:hover:not(:disabled) { background: #e5e7eb; }
+
+.form-error {
+  color: #b91c1c;
+  font-size: 0.875rem;
+  margin: 0;
 }
 
-.empty-state {
+/* Messaggi di stato (loading/errore) */
+.state-message {
+  text-align: center;
+  padding: 2rem;
   color: #6b7280;
-  margin: 0.5rem 0 0;
 }
+
+.state-message.error { color: #b91c1c; }
