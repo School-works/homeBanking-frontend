@@ -1,20 +1,34 @@
 .home-page {
-  max-width: 1040px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
-}
-
-.center {
-  margin-bottom: 1.5rem;
-}
-
-.subtitle {
-  color: #555;
-  margin: 0.5rem 0 0;
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
 }
 
 .accounts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
+
+.state-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.state-message.error { color: var(--danger); }
+
+.state-message button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.4rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.state-message button:hover { background: var(--navy-mid); }

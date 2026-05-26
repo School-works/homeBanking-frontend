@@ -1,3 +1,17 @@
-.center {
-    text-align: center;
+main {
+  min-height: 100vh;
+}
+
+main > h1 {
+  background: var(--navy);
+  color: var(--gold);
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--gold);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow-md);
 }

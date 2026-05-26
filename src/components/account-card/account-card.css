@@ -1,150 +1,108 @@
 .account-card {
-  border: 1px solid #dde3ea;
-  border-radius: 14px;
-  padding: 1rem;
-  background: #ffffff;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: visible;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid var(--navy-light);
 }
 
-.top-button {
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1rem;
-  text-decoration: none;
-  box-sizing: border-box;
+.account-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.account-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Pulsante generico */
-.manage-button {
-  border: none;
-  background: #0b61ff;
-  color: white;
-  padding: 0.65rem 0.9rem;
-  border-radius: 999px;
+.card-header h3 {
+  color: var(--white);
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.card-meta {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0.15rem 0;
+}
+
+.card-balance {
+  margin-top: 0.9rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.01em;
+}
+
+.dropdown { position: relative; }
+
+.dropdown-toggle {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  box-sizing: border-box;
-}
-
-.manage-button:hover:not(:disabled) {
-  background: #084ec7;
-}
-
-.manage-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Pulsanti conversione */
-.conversion-buttons {
-  display: flex;
-  gap: 0.5rem;
-  margin: 0.75rem 0;
-}
-
-.bitcoin-button {
-  background: #f7931a;
-}
-
-.bitcoin-button:hover:not(:disabled) {
-  background: #e68b0f;
-}
-
-/* Risultati conversione */
-.conversions {
-  margin-bottom: 0.5rem;
-}
-
-/* Pulsanti deposito e prelievo */
-.transaction-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.deposit-btn { background: #137333; }
-.deposit-btn:hover { background: #0d5228; }
-
-.withdrawal-btn { background: #b91c1c; }
-.withdrawal-btn:hover { background: #991818; }
-
-/* Form deposito/prelievo */
-.transaction-form {
-  margin-top: 1rem;
-  border-top: 1px solid #e7edf4;
-  padding-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.transaction-form h4 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-}
-
-.transaction-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.transaction-form input {
-  padding: 0.55rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
-.transaction-form input:focus {
-  outline: none;
-  border-color: #0b61ff;
-  box-shadow: 0 0 0 3px rgba(11, 97, 255, 0.1);
-}
-
-.form-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.cancel-btn {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
-  padding: 0.65rem 0.9rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.cancel-btn:hover:not(:disabled) { background: #e5e7eb; }
-
-.form-error {
-  color: #b91c1c;
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Messaggi di stato (loading/errore) */
-.state-message {
   text-align: center;
-  padding: 2rem;
-  color: #6b7280;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.state-message.error { color: #b91c1c; }
+.dropdown-toggle:hover,
+.dropdown.open .dropdown-toggle {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+  padding: 0.5rem;
+  z-index: 300;
+}
+
+.dropdown.open .dropdown-menu { display: block; }
+
+.dropdown-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.dropdown-menu li a:hover {
+  background: var(--navy);
+  color: var(--gold);
+}

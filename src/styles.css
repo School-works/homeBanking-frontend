@@ -1,1 +1,1368 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy:       #0d1b2a;
+  --navy-mid:   #1b2d42;
+  --navy-light: #243447;
+  --gold:       #c9a84c;
+  --gold-light: #e8c96e;
+  --cream:      #f8f4ee;
+  --white:      #ffffff;
+  --text:       #1a2535;
+  --text-muted: #6b7a92;
+  --success:    #1a7f4b;
+  --danger:     #b91c1c;
+  --border:     #e2e8f0;
+  --shadow-sm:  0 2px 8px rgba(13,27,42,0.08);
+  --shadow-md:  0 8px 32px rgba(13,27,42,0.12);
+  --shadow-lg:  0 16px 48px rgba(13,27,42,0.18);
+  --radius:     14px;
+  --radius-sm:  8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--gold-light); }
+
+button { font-family: 'DM Sans', sans-serif; }
+input, select { font-family: 'DM Sans', sans-serif; }
+
+/* Balance
+
+/* ── Pagina operazione ────────────────────────────────────── */
+.operation-page {
+  max-width: 560px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb / back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.back-link:hover { color: var(--navy); }
+
+/* Header */
+.op-header {
+  margin-bottom: 1.75rem;
+}
+
+.op-header h2 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.6rem;
+  color: var(--navy);
+}
+
+.op-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Messaggi stato */
+.state-message {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-muted);
+}
+
+.state-message.error { color: var(--danger); }
+
+/* Riquadro saldo */
+.result-card {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.result-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.75rem;
+}
+
+.result-amount {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* Form operazione */
+.op-form, .convert-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.op-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.op-form input,
+.convert-form select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.op-form input:focus,
+.convert-form select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13,27,42,0.08);
+  background: var(--white);
+}
+
+/* Messaggi errore / successo */
+.form-error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+}
+
+.form-success {
+  font-size: 0.875rem;
+  color: var(--success);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-weight: 600;
+}
+
+/* Pulsanti submit */
+.submit-btn {
+  padding: 0.9rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.deposit-btn    { background: linear-gradient(135deg, #1a7f4b, #15803d); }
+.withdrawal-btn { background: linear-gradient(135deg, #b91c1c, #991818); }
+.convert-btn    { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+
+/* Tabs conversione */
+.convert-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+
+.tab-btn.active {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--gold);
+}
+
+/* Risultato conversione */
+.conversion-result {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--navy);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.conversion-result::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+.conversion-result p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.4rem;
+}
+
+.conversion-result p strong { color: rgba(255,255,255,0.85); }
+
+.conversion-result .converted {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* Pagina transazioni */
+.transactions-page {
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0.2rem 0;
+}
+
+.transactions-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-section { margin-bottom: 1.25rem; }
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--cream);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  background: var(--white);
+}
+
+.transaction-list { list-style: none; padding: 0; }
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--cream); border-radius: var(--radius-sm); padding-left: 0.5rem; padding-right: 0.5rem; }
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.transaction-description { color: var(--text); font-size: 0.95rem; }
+
+.transaction-amount { font-weight: 700; font-size: 0.95rem; }
+.transaction-amount.deposit    { color: var(--success); }
+.transaction-amount.withdrawal { color: var(--danger); }
+
+.no-results, .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.clear-search {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--cream);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.clear-search:hover { background: var(--border); }
+
+/*Deposit
+
+/* ── Pagina operazione ────────────────────────────────────── */
+.operation-page {
+  max-width: 560px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb / back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.back-link:hover { color: var(--navy); }
+
+/* Header */
+.op-header {
+  margin-bottom: 1.75rem;
+}
+
+.op-header h2 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.6rem;
+  color: var(--navy);
+}
+
+.op-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Messaggi stato */
+.state-message {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-muted);
+}
+
+.state-message.error { color: var(--danger); }
+
+/* Riquadro saldo */
+.result-card {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.result-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.75rem;
+}
+
+.result-amount {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* Form operazione */
+.op-form, .convert-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.op-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.op-form input,
+.convert-form select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.op-form input:focus,
+.convert-form select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13,27,42,0.08);
+  background: var(--white);
+}
+
+/* Messaggi errore / successo */
+.form-error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+}
+
+.form-success {
+  font-size: 0.875rem;
+  color: var(--success);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-weight: 600;
+}
+
+/* Pulsanti submit */
+.submit-btn {
+  padding: 0.9rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.deposit-btn    { background: linear-gradient(135deg, #1a7f4b, #15803d); }
+.withdrawal-btn { background: linear-gradient(135deg, #b91c1c, #991818); }
+.convert-btn    { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+
+/* Tabs conversione */
+.convert-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+
+.tab-btn.active {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--gold);
+}
+
+/* Risultato conversione */
+.conversion-result {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--navy);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.conversion-result::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+.conversion-result p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.4rem;
+}
+
+.conversion-result p strong { color: rgba(255,255,255,0.85); }
+
+.conversion-result .converted {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* Pagina transazioni */
+.transactions-page {
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0.2rem 0;
+}
+
+.transactions-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-section { margin-bottom: 1.25rem; }
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--cream);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  background: var(--white);
+}
+
+.transaction-list { list-style: none; padding: 0; }
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--cream); border-radius: var(--radius-sm); padding-left: 0.5rem; padding-right: 0.5rem; }
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.transaction-description { color: var(--text); font-size: 0.95rem; }
+
+.transaction-amount { font-weight: 700; font-size: 0.95rem; }
+.transaction-amount.deposit    { color: var(--success); }
+.transaction-amount.withdrawal { color: var(--danger); }
+
+.no-results, .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.clear-search {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--cream);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.clear-search:hover { background: var(--border); }
+
+/* Withdrawal
+
+/* ── Pagina operazione ────────────────────────────────────── */
+.operation-page {
+  max-width: 560px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb / back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.back-link:hover { color: var(--navy); }
+
+/* Header */
+.op-header {
+  margin-bottom: 1.75rem;
+}
+
+.op-header h2 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.6rem;
+  color: var(--navy);
+}
+
+.op-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Messaggi stato */
+.state-message {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-muted);
+}
+
+.state-message.error { color: var(--danger); }
+
+/* Riquadro saldo */
+.result-card {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.result-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.75rem;
+}
+
+.result-amount {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* Form operazione */
+.op-form, .convert-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.op-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.op-form input,
+.convert-form select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.op-form input:focus,
+.convert-form select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13,27,42,0.08);
+  background: var(--white);
+}
+
+/* Messaggi errore / successo */
+.form-error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+}
+
+.form-success {
+  font-size: 0.875rem;
+  color: var(--success);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-weight: 600;
+}
+
+/* Pulsanti submit */
+.submit-btn {
+  padding: 0.9rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.deposit-btn    { background: linear-gradient(135deg, #1a7f4b, #15803d); }
+.withdrawal-btn { background: linear-gradient(135deg, #b91c1c, #991818); }
+.convert-btn    { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+
+/* Tabs conversione */
+.convert-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+
+.tab-btn.active {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--gold);
+}
+
+/* Risultato conversione */
+.conversion-result {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--navy);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.conversion-result::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+.conversion-result p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.4rem;
+}
+
+.conversion-result p strong { color: rgba(255,255,255,0.85); }
+
+.conversion-result .converted {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* Pagina transazioni */
+.transactions-page {
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0.2rem 0;
+}
+
+.transactions-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-section { margin-bottom: 1.25rem; }
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--cream);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  background: var(--white);
+}
+
+.transaction-list { list-style: none; padding: 0; }
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--cream); border-radius: var(--radius-sm); padding-left: 0.5rem; padding-right: 0.5rem; }
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.transaction-description { color: var(--text); font-size: 0.95rem; }
+
+.transaction-amount { font-weight: 700; font-size: 0.95rem; }
+.transaction-amount.deposit    { color: var(--success); }
+.transaction-amount.withdrawal { color: var(--danger); }
+
+.no-results, .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.clear-search {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--cream);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.clear-search:hover { background: var(--border); }
+
+/* Convert
+
+/* ── Pagina operazione ────────────────────────────────────── */
+.operation-page {
+  max-width: 560px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb / back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.back-link:hover { color: var(--navy); }
+
+/* Header */
+.op-header {
+  margin-bottom: 1.75rem;
+}
+
+.op-header h2 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.6rem;
+  color: var(--navy);
+}
+
+.op-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Messaggi stato */
+.state-message {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-muted);
+}
+
+.state-message.error { color: var(--danger); }
+
+/* Riquadro saldo */
+.result-card {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.result-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.75rem;
+}
+
+.result-amount {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* Form operazione */
+.op-form, .convert-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.op-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.op-form input,
+.convert-form select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.op-form input:focus,
+.convert-form select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13,27,42,0.08);
+  background: var(--white);
+}
+
+/* Messaggi errore / successo */
+.form-error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+}
+
+.form-success {
+  font-size: 0.875rem;
+  color: var(--success);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-weight: 600;
+}
+
+/* Pulsanti submit */
+.submit-btn {
+  padding: 0.9rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.deposit-btn    { background: linear-gradient(135deg, #1a7f4b, #15803d); }
+.withdrawal-btn { background: linear-gradient(135deg, #b91c1c, #991818); }
+.convert-btn    { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+
+/* Tabs conversione */
+.convert-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+
+.tab-btn.active {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--gold);
+}
+
+/* Risultato conversione */
+.conversion-result {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--navy);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.conversion-result::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+.conversion-result p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.4rem;
+}
+
+.conversion-result p strong { color: rgba(255,255,255,0.85); }
+
+.conversion-result .converted {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* Pagina transazioni */
+.transactions-page {
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  animation: fadeUp 0.3s ease both;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0.2rem 0;
+}
+
+.transactions-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-section { margin-bottom: 1.25rem; }
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--cream);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  background: var(--white);
+}
+
+.transaction-list { list-style: none; padding: 0; }
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--cream); border-radius: var(--radius-sm); padding-left: 0.5rem; padding-right: 0.5rem; }
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.transaction-description { color: var(--text); font-size: 0.95rem; }
+
+.transaction-amount { font-weight: 700; font-size: 0.95rem; }
+.transaction-amount.deposit    { color: var(--success); }
+.transaction-amount.withdrawal { color: var(--danger); }
+
+.no-results, .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.clear-search {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--cream);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.clear-search:hover { background: var(--border); }
