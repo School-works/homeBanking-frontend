@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { accounts } from '../data/accounts';
-import { Account } from '../../../models/account';
-import { Transaction } from '../../../models/transaction';
+import { Subscription, forkJoin } from 'rxjs';
+import { BankingService, Account, Transaction } from '../../../app/services/banking.service';
 
 @Component({
   standalone: true,
@@ -13,26 +12,73 @@ import { Transaction } from '../../../models/transaction';
   templateUrl: './account-transactions.html',
   styleUrls: ['./account-transactions.css'],
 })
-export class AccountTransactions {
+export class AccountTransactions implements OnInit, OnDestroy {
   protected account?: Account;
+  protected transactions: Transaction[] = [];
+  protected balance: number = 0;
   protected searchTerm = '';
+  protected loading = true;
+  protected error: string | null = null;
 
-  constructor(route: ActivatedRoute) {
-    const accountId = Number(route.snapshot.paramMap.get('id'));
-    this.account = accounts.find((item) => item.id === accountId);
+  private accountId!: number;
+  private subs: Subscription[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private banking: BankingService,
+    private cdr: ChangeDetectorRef,
+  ) {
+    this.accountId = Number(this.route.snapshot.paramMap.get('id'));
+  }
+
+  ngOnInit(): void {
+    this.load();
+  }
+
+  protected load(): void {
+    this.loading = true;
+    this.error = null;
+    this.subs.forEach((s) => s.unsubscribe());
+    this.subs = [];
+
+    const sub = forkJoin({
+      account: this.banking.getAccount(this.accountId),
+      transactions: this.banking.getTransactions(this.accountId),
+      balanceData: this.banking.getBalance(this.accountId),
+    }).subscribe({
+      next: ({ account, transactions, balanceData }) => {
+        this.account = account;
+        this.transactions = transactions;
+        this.balance = balanceData.balance;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('forkJoin error:', err);
+        this.error = 'Failed to load account data.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
+    this.subs.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((s) => s.unsubscribe());
   }
 
   protected get filteredTransactions(): Transaction[] {
-    if (!this.account?.transactions) return [];
-    if (!this.searchTerm.trim()) return this.account.transactions;
-
+    if (!this.searchTerm.trim()) return this.transactions;
     const searchId = parseInt(this.searchTerm.trim());
     if (isNaN(searchId)) return [];
-
-    return this.account.transactions.filter(transaction => transaction.id === searchId);
+    return this.transactions.filter((t) => t.id === searchId);
   }
 
-  protected trackByTransactionId(_index: number, transaction: { id: number }): number {
-    return transaction.id;
+  protected signedAmount(t: Transaction): number {
+    return t.type === 'withdrawal' ? -Math.abs(t.amount) : Math.abs(t.amount);
+  }
+
+  protected trackByTransactionId(_index: number, t: Transaction): number {
+    return t.id;
   }
 }
