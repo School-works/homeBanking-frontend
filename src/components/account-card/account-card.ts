@@ -14,8 +14,9 @@ import { BankingService, Account } from '../../app/services/banking.service';
 export class AccountCard implements OnInit, OnDestroy {
   @Input() account!: Account;
 
-protected balance: number | " " = " ";
+  protected balance: number | " " = " ";
   protected menuOpen = false;
+  protected loggedIn = false;
 
   private subs: Subscription[] = [];
 

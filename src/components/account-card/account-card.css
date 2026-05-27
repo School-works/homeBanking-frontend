@@ -106,3 +106,23 @@
   background: var(--navy);
   color: var(--gold);
 }
+.login-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.login-btn:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
